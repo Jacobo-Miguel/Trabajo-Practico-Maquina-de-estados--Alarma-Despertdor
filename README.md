@@ -7,3 +7,9 @@ Si el usario elije posponer la alarma entonces entrara en el tercer estado de Po
 # Diagrama
 ![imagenError](https://github.com/Jacobo-Miguel/Trabajo-Practico-Maquina-de-estados--Alarma-Despertdor/blob/master/imagen/Copia%20de%20Copia%20de%20Mi%20primer%20documento.png)
 
+.Extension= tiempo que se pospone la alarma
+
+.Hora= tiempo que transcurre en el momento
+
+.Horaprog= tiempo programado por el usuario
+
