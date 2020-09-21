@@ -7,8 +7,18 @@ typedef struct{
 	int minutos;
 	int rep;
 	int extension;
-	int dias[8];
+	int dias[8],cdias;
 }datos_t;
+
+typedef enum{
+	domingo = 0,
+	lunes = 1,
+	martes = 2,
+	miercoles = 3,
+	jueves = 4,
+	viernes = 5,
+	sabado = 6
+}dias_t;
 
 typedef enum{
 	silenciada = 0,
@@ -16,15 +26,9 @@ typedef enum{
 	pospuesta = 2
 }estados_t;
 
-typedef enum{
-	activada = 1,
-	desactivada = 0
-}est_t;
 
 datos_t inicio();
-void reloj();
 estados_t silencio(datos_t datos);
 estados_t alarma(datos_t datos);
 estados_t posponer(datos_t datos);
-
 #endif
