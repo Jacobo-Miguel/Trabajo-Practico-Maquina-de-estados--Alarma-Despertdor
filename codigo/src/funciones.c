@@ -6,14 +6,15 @@
 
 //CONFIGURAR ALARMA
 datos_t inicio(){
-	datos_t datos;
-
+	datos_t datos; 
+    dias_t dias1;
+    datos.cdias=0;
 	int i=0;
 	int k,h;
 	char eleccion,elec;
 	//CREANDO EL ARCHIVO DE CONFIGURACION//
 	FILE *alarmap;
-	if((alarmap=fopen("alarmap","wb"))==NULL){
+	if((alarmap=fopen("alarmap.txt","wb"))==NULL){
 		printf("NO SE PUDO LEER EL ARCHIVO");
 	}
 	else{
@@ -28,12 +29,13 @@ datos_t inicio(){
 		    printf("|(0)DOMINGO/(1)LUNES/(2)MARTES/(3)MIERCOLES/(4)JUEVES/(5)VIERNES/(6)SABADO|\n");
            	printf("SELECCIONE EL DIA: ");
 		    scanf("%d",&datos.dias[i]);
-		    while(datos.dias[i]!= 0 && datos.dias[i]!= 1 && datos.dias[i]!= 2 && datos.dias[i]!= 3 && datos.dias[i]!= 4 && datos.dias[i]!= 5 && datos.dias[i]!= 6){
+		    while(datos.dias[i]!= domingo && datos.dias[i]!= lunes && datos.dias[i]!= martes && datos.dias[i]!= miercoles && datos.dias[i]!= jueves && datos.dias[i]!= viernes && datos.dias[i]!= sabado){
 		    	printf("DIA INEXISTENTE!!\n");
 		    	printf("|(0)DOMINGO/(1)LUNES/(2)MARTES/(3)MIERCOLES/(4)JUEVES/(5)VIERNES/(6)SABADO|\n");
            	    printf("SELECCIONE EL DIA NUEVAMENTE: ");
 		        scanf("%d",&datos.dias[i]);
 			}
+			datos.cdias++;
 			fflush(stdin);
 		    i++;
 		    printf("AGREGAR OTRO DIA (S/N): ");
@@ -57,6 +59,11 @@ datos_t inicio(){
 	   		printf("REPETIR CADA: \n\t3 VECES\n\t5 VECES\n");
 	   	    scanf("%d",&datos.rep);
 	    }
+	    
+	  }
+	  
+	  if(elec=='N' || elec=='n'){
+	  	datos.extension=0;
 	  }
       system("cls");
       fflush(stdin);
@@ -64,7 +71,7 @@ datos_t inicio(){
       fclose(alarmap);
    }
 	  
-	if((alarmap=fopen("alarmap","rb"))==NULL){
+	if((alarmap=fopen("alarmap.txt","rb"))==NULL){
 	   	printf("NO SE PUEDE LEER EL ARCHIVO DE CONFIGURACION");
 	   } 
 	   
@@ -84,30 +91,33 @@ datos_t inicio(){
 	    int j;
 	    for(j=0;j<i;j++)
 	    {
-	    	if(datos.dias[j]==0){
+	    	if(datos.dias[j]==domingo){
 	    		printf("DOMINGO/");
 			}
-			if(datos.dias[j]==1){
+			if(datos.dias[j]==lunes){
 				printf("LUNES/");
 			}
-			if(datos.dias[j]==2){
+			if(datos.dias[j]==martes){
 				printf("MARTES/");
 			}
-			if(datos.dias[j]==3){
+			if(datos.dias[j]==miercoles){
 				printf("MIERCOLES/");
 			}
-			if(datos.dias[j]==4){
+			if(datos.dias[j]==jueves){
 				printf("JUEVES/");
 			}
-			if(datos.dias[j]==5){
+			if(datos.dias[j]==viernes){
 				printf("VIERNES/");
 			}
-			if(datos.dias[j]==6){
+			if(datos.dias[j]==sabado){
 				printf("SABADO/");
 			}
 		}
 		printf("\n");
-		printf("*REPETIR A LOS %i MINUTOS %i VECES\n",datos.extension,datos.rep);
+		if(elec=='S' || elec=='s'){
+			printf("*REPETIR A LOS %i MINUTOS %i VECES\n",datos.extension,datos.rep);	
+		}
+		
 	    system("pause");
         system("cls");
 	    fclose(alarmap);
@@ -118,10 +128,9 @@ datos_t inicio(){
 
 //ESTADO DE SILENCIO
 estados_t silencio(datos_t datos){
-	int hora,minuto,segundos,dia;
-	est_t est;
-	est = activada;
+	int hora,minuto,segundos,dia,i,diaselec=0;
 	time_t tiempoahora;
+	dias_t dias;
     time(&tiempoahora);
     struct tm *mitiempo = localtime(&tiempoahora);
 	hora = mitiempo->tm_hour;
@@ -130,238 +139,239 @@ estados_t silencio(datos_t datos){
     dia = mitiempo->tm_wday;
 		
 		if(hora<10 && minuto<10 && segundos<10){
-			if(dia == 0){
+			if(dia == domingo){
     			printf("DOMINGO\n");
 			}
-			if(dia == 1){
+			if(dia == lunes){
 				printf("LUNES\n");
 			}
-			if(dia == 2){
+			if(dia == martes){
     			printf("MARTES\n");
 			}
-			if(dia == 3){
+			if(dia == miercoles){
     			printf("MIERCOLES\n");
 			}
-			if(dia == 4){
+			if(dia == jueves){
     			printf("JUEVES\n");
 			}
 			
-			if(dia == 5){
+			if(dia == viernes){
     			printf("VIERNES\n");
 			}
-			if(dia == 6){
+			if(dia == sabado){
     			printf("SABADO\n");
 			}
 			printf("SILENCIO\n");
 			printf("0%d:0%d:0%d",hora,minuto,segundos);
-			Sleep(1000);
 			system("cls");
 		} 
 		
 		if(hora>=10 && minuto>=10 && segundos>=10){
-			if(dia == 0){
+			if(dia == domingo){
     			printf("DOMINGO\n");
 			}
-			if(dia == 1){
+			if(dia == lunes){
 				printf("LUNES\n");
 			}
-			if(dia == 2){
+			if(dia == martes){
     			printf("MARTES\n");
 			}
-			if(dia == 3){
+			if(dia == miercoles){
     			printf("MIERCOLES\n");
 			}
-			if(dia == 4){
+			if(dia == jueves){
     			printf("JUEVES\n");
 			}
 			
-			if(dia == 5){
+			if(dia == viernes){
     			printf("VIERNES\n");
 			}
-			if(dia == 6){
+			if(dia == sabado){
     			printf("SABADO\n");
 			}
 			printf("SILENCIO\n");
 			printf("%d:%d:%d",hora,minuto,segundos);
-			Sleep(1000);
 			system("cls");	
 		} 
 		
 		if(hora<10 && minuto<10 && segundos>=10){
-			if(dia == 0){
+			if(dia == domingo){
     			printf("DOMINGO\n");
 			}
-			if(dia == 1){
+			if(dia == lunes){
 				printf("LUNES\n");
 			}
-			if(dia == 2){
+			if(dia == martes){
     			printf("MARTES\n");
 			}
-			if(dia == 3){
+			if(dia == miercoles){
     			printf("MIERCOLES\n");
 			}
-			if(dia == 4){
+			if(dia == jueves){
     			printf("JUEVES\n");
 			}
 			
-			if(dia == 5){
+			if(dia == viernes){
     			printf("VIERNES\n");
 			}
-			if(dia == 6){
+			if(dia == sabado){
     			printf("SABADO\n");
 			}
 			printf("SILENCIO\n");
 			printf("0%d:0%d:%d",hora,minuto,segundos);
-			Sleep(1000);
 			system("cls");
 		} 
 		
 		if(hora<10 && segundos<10 && minuto>=10){
-			if(dia == 0){
+			if(dia == domingo){
     			printf("DOMINGO\n");
 			}
-			if(dia == 1){
+			if(dia == lunes){
 				printf("LUNES\n");
 			}
-			if(dia == 2){
+			if(dia == martes){
     			printf("MARTES\n");
 			}
-			if(dia == 3){
+			if(dia == miercoles){
     			printf("MIERCOLES\n");
 			}
-			if(dia == 4){
+			if(dia == jueves){
     			printf("JUEVES\n");
 			}
 			
-			if(dia == 5){
+			if(dia == viernes){
     			printf("VIERNES\n");
 			}
-			if(dia == 6){
+			if(dia == sabado){
     			printf("SABADO\n");
 			}
 			printf("SILENCIO\n");
 			printf("0%d:%d:0%d",hora,minuto,segundos);
-			Sleep(1000);
 			system("cls");
 		}
 		
 		if(minuto<10 && segundos<10 && hora>=10){
-			if(dia == 0){
+			if(dia == domingo){
     			printf("DOMINGO\n");
 			}
-			if(dia == 1){
+			if(dia == lunes){
 				printf("LUNES\n");
 			}
-			if(dia == 2){
+			if(dia == martes){
     			printf("MARTES\n");
 			}
-			if(dia == 3){
+			if(dia == miercoles){
     			printf("MIERCOLES\n");
 			}
-			if(dia == 4){
+			if(dia == jueves){
     			printf("JUEVES\n");
 			}
 			
-			if(dia == 5){
+			if(dia == viernes){
     			printf("VIERNES\n");
 			}
-			if(dia == 6){
+			if(dia == sabado){
     			printf("SABADO\n");
 			}
 			printf("SILENCIO\n");
 			printf("%d:0%d:0%d",hora,minuto,segundos);
-			Sleep(1000);
 			system("cls");
 		}
 		
 		if(hora<10 && minuto>=10 && segundos>=10){
-			if(dia == 0){
+			if(dia == domingo){
     			printf("DOMINGO\n");
 			}
-			if(dia == 1){
+			if(dia == lunes){
 				printf("LUNES\n");
 			}
-			if(dia == 2){
+			if(dia == martes){
     			printf("MARTES\n");
 			}
-			if(dia == 3){
+			if(dia == miercoles){
     			printf("MIERCOLES\n");
 			}
-			if(dia == 4){
+			if(dia == jueves){
     			printf("JUEVES\n");
 			}
 			
-			if(dia == 5){
+			if(dia == viernes){
     			printf("VIERNES\n");
 			}
-			if(dia == 6){
+			if(dia == sabado){
     			printf("SABADO\n");
 			}
 			printf("SILENCIO\n");
 			printf("0%d:%d:%d",hora,minuto,segundos);
-			Sleep(1000);
 			system("cls");
 		}
 		
 		if(minuto<10 && hora>=10 && segundos>=10){
-			if(dia == 0){
+			if(dia == domingo){
     			printf("DOMINGO\n");
 			}
-			if(dia == 1){
+			if(dia == lunes){
 				printf("LUNES\n");
 			}
-			if(dia == 2){
+			if(dia == martes){
     			printf("MARTES\n");
 			}
-			if(dia == 3){
+			if(dia == miercoles){
     			printf("MIERCOLES\n");
 			}
-			if(dia == 4){
+			if(dia == jueves){
     			printf("JUEVES\n");
 			}
 			
-			if(dia == 5){
+			if(dia == viernes){
     			printf("VIERNES\n");
 			}
-			if(dia == 6){
+			if(dia == sabado){
     			printf("SABADO\n");
 			}
 			printf("SILENCIO\n");
 			printf("%d:0%d:%d",hora,minuto,segundos);
-			Sleep(1000);
 			system("cls");
 		}
 		
 		if(segundos<10 && hora>=10 && minuto>=10){
-			if(dia == 0){
+			if(dia == domingo){
     			printf("DOMINGO\n");
 			}
-			if(dia == 1){
+			if(dia == lunes){
 				printf("LUNES\n");
 			}
-			if(dia == 2){
+			if(dia == martes){
     			printf("MARTES\n");
 			}
-			if(dia == 3){
+			if(dia == miercoles){
     			printf("MIERCOLES\n");
 			}
-			if(dia == 4){
+			if(dia == jueves){
     			printf("JUEVES\n");
 			}
 			
-			if(dia == 5){
+			if(dia == viernes){
     			printf("VIERNES\n");
 			}
-			if(dia == 6){
+			if(dia == sabado){
     			printf("SABADO\n");
 			}
 			printf("SILENCIO\n");
 			printf("%d:%d:0%d",hora,minuto,segundos);
-			Sleep(1000);
 			system("cls");
 		}	
+		
+		for(i=0;i<datos.cdias;i++){
+			if(datos.dias[i]==dia){
+				diaselec=1;
+			}
+			else{
+				diaselec=0;
+			}
+		}
 
-	return (hora<datos.hora || minuto!=datos.minutos || est == desactivada)? silenciada : disparar;	
+	return (hora<datos.hora || minuto!=datos.minutos || diaselec!=1)? silenciada : disparar;	
 }
 
 //ESTADO DE POSPONER
@@ -374,9 +384,38 @@ estados_t posponer(datos_t datos){
     minuto = mitiempo->tm_min;
     segundos = mitiempo->tm_sec;
     
-    printf("ALARMA POSPUESTA %i MINUTOS\n",datos.extension);
-    printf("%d:%d:%d",hora,minuto,segundos);
-	Sleep(1000);
+    printf("ALARMA POSPUESTA\n",datos.extension);
+        if(hora<10 && minuto<10 && segundos<10){
+			printf("0%d:0%d:0%d",hora,minuto,segundos);
+		} 
+		
+		if(hora>=10 && minuto>=10 && segundos>=10){
+			printf("%d:%d:%d",hora,minuto,segundos);
+		} 
+		
+		if(hora<10 && minuto<10 && segundos>=10){
+			printf("0%d:0%d:%d",hora,minuto,segundos);
+		} 
+		
+		if(hora<10 && segundos<10 && minuto>=10){
+			printf("0%d:%d:0%d",hora,minuto,segundos);
+		}
+		
+		if(minuto<10 && segundos<10 && hora>=10){
+			printf("%d:0%d:0%d",hora,minuto,segundos);
+		}
+		
+		if(hora<10 && minuto>=10 && segundos>=10){
+			printf("0%d:%d:%d",hora,minuto,segundos);
+		}
+		
+		if(minuto<10 && hora>=10 && segundos>=10){
+			printf("%d:0%d:%d",hora,minuto,segundos);
+		}
+		
+		if(segundos<10 && hora>=10 && minuto>=10){
+			printf("%d:%d:0%d",hora,minuto,segundos);
+		}
     datos.minutos=datos.minutos+(datos.extension);
 		
     if(datos.minutos>=60){
@@ -391,20 +430,32 @@ estados_t posponer(datos_t datos){
 
 //ESTADO DE ALARMA
 estados_t alarma(datos_t datos){
-	int elec;
-	est_t est;
+	int elec=0;
 	estados_t estados = disparar;
-	printf("ALARMA\n(1)POSPONER|(2)DESACTIVAR\n");
-	printf("\a");
-	scanf("%i",&elec);
+	if(datos.extension>0){
+		printf("ALARMA\n(1)POSPONER|(2)DESACTIVAR\n");
+    	printf("\a");
+	    scanf("%i",&elec);
 	
-	if(elec==1){
-		 estados = pospuesta;
+	    if(elec==1){
+		    estados = pospuesta;
+     	}
+     	if(elec==2){
+		    printf("ALARMA DESACTIVADA\n");
+		    estados = silenciada;
+    	}
+		
 	}
-	if(elec==2){
-		 est = desactivada;
-		 printf("ALARMA DESACTIVADA\n");
-		 estados = silenciada;
+	if(datos.extension==0){
+		printf("ALARMA\n(1)DESACTIVAR\n");
+    	printf("\a");
+	    scanf("%i",&elec);
+	
+     	if(elec==1){
+		    printf("ALARMA DESACTIVADA\n");
+		    estados = silenciada;
+    	}
+		
 	}
 	return estados;
 }
