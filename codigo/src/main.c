@@ -5,8 +5,8 @@
 
 int main(){
 	datos_t datos;
+	dias_t dias;
 	datos = inicio();
-	est_t est = activada;
 	estados_t estados = silenciada;//ESTADO INICIAL//
 	while(1){
 	   	switch(estados){
